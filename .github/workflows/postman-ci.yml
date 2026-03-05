@@ -22,21 +22,12 @@ jobs:
       - name: Install Newman
         run: npm install -g newman newman-reporter-htmlextra
 
-      - name: Run collection
-        env:
-          BASE_URL: ${{ secrets.BILLING_API_BASE_URL }}
-          ACCESS_TOKEN: ${{ secrets.BILLING_TEST_TOKEN }}
-          PAYMENT_METHOD_ID: ${{ secrets.BILLING_TEST_PAYMENT_METHOD }}
+      - name: Run collection against Postman Cloud Mock
         run: |
           newman run "postman/collections/Billing API.postman_collection.json" \
             --environment "postman/environments/production.postman_environment.json" \
-            --env-var "baseUrl=${BASE_URL}" \
-            --env-var "accessToken=${ACCESS_TOKEN}" \
-            --env-var "paymentMethodId=${PAYMENT_METHOD_ID}" \
             --reporters cli,htmlextra \
             --reporter-htmlextra-export reports/billing-api-results.html
-          # Note: --bail intentionally omitted; payment suite has known flaky tests
-          # tracked in BILL-2847 and BILL-2901
 
       - name: Upload test report
         if: always()
