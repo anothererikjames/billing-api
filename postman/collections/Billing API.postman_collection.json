@@ -1,0 +1,270 @@
+{
+  "info": {
+    "name": "Billing API",
+    "description": "Subscription management, invoicing, and payment processing. CI pass rate degraded — 3 flaky tests in payment suite.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "List Subscriptions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Returns data array\", () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.data).to.be.an('array');",
+                  "});",
+                  "pm.test(\"Response time < 600ms\", () => pm.expect(pm.response.responseTime).to.be.below(600));",
+                  "// Store first subscription ID for later tests",
+                  "const data = pm.response.json().data;",
+                  "if (data && data.length > 0) {",
+                  "  pm.environment.set('subscriptionId', data[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{accessToken}}" }]
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/subscriptions?status=active&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["subscriptions"],
+              "query": [
+                { "key": "status", "value": "active" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Subscription",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Subscription is active or trialing\", () => {",
+                  "  const status = pm.response.json().status;",
+                  "  pm.expect(['active', 'trialing']).to.include(status);",
+                  "});",
+                  "pm.test(\"Has period dates\", () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.currentPeriodStart).to.be.a('string');",
+                  "  pm.expect(body.currentPeriodEnd).to.be.a('string');",
+                  "  pm.environment.set('subscriptionId', body.id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{accessToken}}" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"planId\": \"plan_pro_monthly\",\n  \"paymentMethodId\": \"{{paymentMethodId}}\",\n  \"trialDays\": 14\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/subscriptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["subscriptions"]
+            }
+          }
+        },
+        {
+          "name": "Get Subscription",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"ID matches request\", () => {",
+                  "  pm.expect(pm.response.json().id).to.equal(pm.environment.get('subscriptionId'));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{accessToken}}" }]
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/subscriptions/{{subscriptionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["subscriptions", "{{subscriptionId}}"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Subscription",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"cancelAtPeriodEnd is true\", () => {",
+                  "  pm.expect(pm.response.json().cancelAtPeriodEnd).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{accessToken}}" }]
+            },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"immediately\": false,\n  \"reason\": \"End of trial — not converting\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/subscriptions/{{subscriptionId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["subscriptions", "{{subscriptionId}}", "cancel"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invoices",
+      "item": [
+        {
+          "name": "List Invoices",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Returns data array\", () => {",
+                  "  pm.expect(pm.response.json().data).to.be.an('array');",
+                  "});",
+                  "const data = pm.response.json().data;",
+                  "if (data && data.length > 0) {",
+                  "  pm.environment.set('invoiceId', data[0].id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{accessToken}}" }]
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/invoices?status=paid",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices"],
+              "query": [{ "key": "status", "value": "paid" }]
+            }
+          }
+        },
+        {
+          "name": "Get Invoice",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Has required fields\", () => {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.include.all.keys('id', 'status', 'amountDue', 'currency');",
+                  "});",
+                  "// FLAKY: occasionally fails when invoice PDF is still generating",
+                  "pm.test(\"Has PDF URL\", () => {",
+                  "  pm.expect(pm.response.json().pdfUrl).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{accessToken}}" }]
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/invoices/{{invoiceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", "{{invoiceId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Process Payment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Status is succeeded\", () => {",
+                  "  // FLAKY: intermittently returns 'pending' instead of 'succeeded' in staging",
+                  "  pm.expect(pm.response.json().status).to.equal('succeeded');",
+                  "});",
+                  "pm.test(\"Has charge ID\", () => {",
+                  "  pm.expect(pm.response.json().chargeId).to.be.a('string');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{accessToken}}" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoiceId\": \"{{invoiceId}}\",\n  \"paymentMethodId\": \"{{paymentMethodId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "process"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.acme.io/billing/v2" }
+  ]
+}
