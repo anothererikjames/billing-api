@@ -39,8 +39,6 @@ paths:
       summary: List subscriptions
       operationId: listSubscriptions
       tags: [subscriptions]
-      security:
-        - BearerAuth: []
       parameters:
         - name: status
           in: query
@@ -66,8 +64,6 @@ paths:
       summary: Create subscription
       operationId: createSubscription
       tags: [subscriptions]
-      security:
-        - BearerAuth: []
       requestBody:
         required: true
         content:
@@ -92,8 +88,6 @@ paths:
       summary: Get subscription
       operationId: getSubscription
       tags: [subscriptions]
-      security:
-        - BearerAuth: []
       parameters:
         - name: subscriptionId
           in: path
@@ -110,8 +104,6 @@ paths:
       summary: Cancel subscription
       operationId: cancelSubscription
       tags: [subscriptions]
-      security:
-        - BearerAuth: []
       parameters:
         - name: subscriptionId
           in: path
@@ -137,8 +129,6 @@ paths:
       summary: List invoices
       operationId: listInvoices
       tags: [invoices]
-      security:
-        - BearerAuth: []
       parameters:
         - name: customer_id
           in: query
@@ -164,8 +154,6 @@ paths:
       summary: Get invoice
       operationId: getInvoice
       tags: [invoices]
-      security:
-        - BearerAuth: []
       parameters:
         - name: invoiceId
           in: path
@@ -183,8 +171,6 @@ paths:
       summary: Pay invoice
       operationId: payInvoice
       tags: [payments]
-      security:
-        - BearerAuth: []
       parameters:
         - name: invoiceId
           in: path
@@ -214,11 +200,7 @@ paths:
                     type: array
                     items: { $ref: '#/components/schemas/Plan' }
 components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+
   schemas:
     Subscription:
       type: object
