@@ -1,0 +1,6 @@
+{
+  "workspaceName": "billing-api",
+  "domain": "billing",
+  "collections": "postman/collections",
+  "environments": "postman/environments"
+}
