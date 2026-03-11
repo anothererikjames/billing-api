@@ -1,124 +1,92 @@
 openapi: 3.0.3
 info:
-  title: Identity API
-  description: User identity, authentication, and role management service
+  title: Billing API
+  description: Subscription, invoice, and payment management
   version: "1.0.0"
   contact:
-    name: Platform Team
-    email: platform@example.com
+    name: Billing Team
+    email: billing@example.com
 security:
   - BearerAuth: []
 
 servers:
-  - url: https://identity.api.example.com/v1
+  - url: https://billing.api.example.com/v1
     description: Production
-  - url: https://identity-dev.api.example.com/v1
+  - url: https://billing-dev.api.example.com/v1
     description: Development
 
 paths:
-  /auth/login:
-    post:
-      operationId: loginUser
-      summary: Authenticate a user and return tokens
-      description: Validates credentials and returns access + refresh tokens
-      tags: [Authentication]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [email, password]
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                  format: password
-      responses:
-        "200":
-          description: Authentication successful
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AuthTokens"
-        "401":
-          description: Invalid credentials
-
-  /auth/refresh:
-    post:
-      operationId: refreshToken
-      summary: Refresh an access token
-      tags: [Authentication]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [refreshToken]
-              properties:
-                refreshToken:
-                  type: string
-      responses:
-        "200":
-          description: New tokens issued
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AuthTokens"
-
-  /users:
+  /subscriptions:
     get:
-      operationId: listUsers
-      summary: List all users
-      tags: [Users]
-      parameters:
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            default: 20
-        - name: offset
-          in: query
-          schema:
-            type: integer
-            default: 0
+      operationId: listSubscriptions
+      summary: List all subscriptions
+      tags: [Subscriptions]
       responses:
         "200":
-          description: List of users
+          description: List of subscriptions
 
     post:
-      operationId: createUser
-      summary: Create a new user
-      tags: [Users]
+      operationId: createSubscription
+      summary: Create a new subscription
+      tags: [Subscriptions]
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserInput"
+              $ref: "#/components/schemas/SubscriptionInput"
       responses:
         "201":
-          description: User created
+          description: Subscription created
 
-  /users/{userId}:
+  /invoices:
     get:
-      operationId: getUser
-      summary: Get a user by ID
-      tags: [Users]
+      operationId: listInvoices
+      summary: List invoices
+      tags: [Invoices]
+      responses:
+        "200":
+          description: List of invoices
+
+  /invoices/{invoiceId}:
+    get:
+      operationId: getInvoice
+      summary: Get invoice by ID
+      tags: [Invoices]
       parameters:
-        - name: userId
+        - name: invoiceId
           in: path
           required: true
           schema:
             type: string
       responses:
         "200":
-          description: User found
+          description: Invoice details
         "404":
-          description: User not found
+          description: Invoice not found
+
+  /payment-methods:
+    get:
+      operationId: listPaymentMethods
+      summary: List saved payment methods
+      tags: [Payment Methods]
+      responses:
+        "200":
+          description: Payment methods list
+
+    post:
+      operationId: addPaymentMethod
+      summary: Add a payment method
+      tags: [Payment Methods]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentMethodInput"
+      responses:
+        "201":
+          description: Payment method added
 
 components:
   securitySchemes:
@@ -128,25 +96,21 @@ components:
       bearerFormat: JWT
 
   schemas:
-    AuthTokens:
+    SubscriptionInput:
       type: object
+      required: [planId, customerId]
       properties:
-        accessToken:
+        planId:
           type: string
-        refreshToken:
+        customerId:
           type: string
-        expiresIn:
-          type: integer
 
-    UserInput:
+    PaymentMethodInput:
       type: object
-      required: [email, name]
+      required: [type, token]
       properties:
-        email:
+        type:
           type: string
-          format: email
-        name:
+          enum: [card, bank_account]
+        token:
           type: string
-        role:
-          type: string
-          enum: [admin, member, viewer]
