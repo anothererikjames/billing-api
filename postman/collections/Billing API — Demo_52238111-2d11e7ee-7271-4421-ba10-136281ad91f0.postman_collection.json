@@ -1,0 +1,407 @@
+{
+  "info": {
+    "_postman_id": "2d11e7ee-7271-4421-ba10-136281ad91f0",
+    "name": "Billing API — Demo",
+    "description": "Demo collection for billing service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET /subscriptions",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 2xx\", () => {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+              "});",
+              "pm.test(\"Response time < 500ms\", () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(500);",
+              "});",
+              "pm.test(\"Response has valid JSON\", () => {",
+              "  pm.response.to.have.header(\"content-type\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "id": "aaa1015f-4916-499d-8501-b022c5e23c04",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/subscriptions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "subscriptions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /subscriptions",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 2xx\", () => {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+              "});",
+              "pm.test(\"Response time < 500ms\", () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(500);",
+              "});",
+              "pm.test(\"Response has valid JSON\", () => {",
+              "  pm.response.to.have.header(\"content-type\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "id": "f85abb2b-f120-4010-a5d1-5e4766c287f8",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/subscriptions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "subscriptions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /subscriptions/:id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 2xx\", () => {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+              "});",
+              "pm.test(\"Response time < 500ms\", () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(500);",
+              "});",
+              "pm.test(\"Response has valid JSON\", () => {",
+              "  pm.response.to.have.header(\"content-type\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "id": "bc329022-a7bb-457e-90b3-58d25606c167",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/subscriptions/{{subId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "subscriptions",
+            "{{subId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE /subscriptions/:id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 2xx\", () => {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+              "});",
+              "pm.test(\"Response time < 500ms\", () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(500);",
+              "});",
+              "pm.test(\"Response has valid JSON\", () => {",
+              "  pm.response.to.have.header(\"content-type\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "id": "42a05541-aacf-42c5-a975-100ae2dce901",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/subscriptions/{{subId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "subscriptions",
+            "{{subId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /invoices",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 2xx\", () => {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+              "});",
+              "pm.test(\"Response time < 500ms\", () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(500);",
+              "});",
+              "pm.test(\"Response has valid JSON\", () => {",
+              "  pm.response.to.have.header(\"content-type\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "id": "9519970b-f07c-4596-b95b-583f7a2f5b89",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/invoices",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "invoices"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /invoices/:id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 2xx\", () => {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+              "});",
+              "pm.test(\"Response time < 500ms\", () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(500);",
+              "});",
+              "pm.test(\"Response has valid JSON\", () => {",
+              "  pm.response.to.have.header(\"content-type\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "id": "5a0974cc-88d0-461f-a619-4495e2515130",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/invoices/{{invoiceId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "invoices",
+            "{{invoiceId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /payment-methods",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 2xx\", () => {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+              "});",
+              "pm.test(\"Response time < 500ms\", () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(500);",
+              "});",
+              "pm.test(\"Response has valid JSON\", () => {",
+              "  pm.response.to.have.header(\"content-type\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "id": "9ddcbc8c-b3e2-4c3d-86f8-4546d782164d",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/payment-methods",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "payment-methods"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /payment-methods",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 2xx\", () => {",
+              "  pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+              "});",
+              "pm.test(\"Response time < 500ms\", () => {",
+              "  pm.expect(pm.response.responseTime).to.be.below(500);",
+              "});",
+              "pm.test(\"Response has valid JSON\", () => {",
+              "  pm.response.to.have.header(\"content-type\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "id": "6125558a-878b-4a9d-8d6f-509837dbffd7",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/payment-methods",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "payment-methods"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.example.com/v1"
+    },
+    {
+      "key": "authToken",
+      "value": ""
+    }
+  ]
+}

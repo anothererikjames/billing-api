@@ -1,6 +1,17 @@
 {
-  "workspaceName": "billing-api",
-  "domain": "billing",
-  "collections": "postman/collections",
-  "environments": "postman/environments"
+  "workspace": {
+    "id": "3c7af2e5-6dfc-4f49-893f-ed4e482d459c"
+  },
+  "entities": {
+    "collections": [
+      "../postman/collections/Billing API — Demo_52238111-2d11e7ee-7271-4421-ba10-136281ad91f0.postman_collection.json"
+    ],
+    "environments": [
+      "../postman/environments/Billing API — Production_52238111-8deb82ef-1d58-432d-897d-0f8325e93284.postman_environment.json",
+      "../postman/environments/Billing API — Development_52238111-296a7508-ba83-40fe-bf62-3a0d33e028d2.postman_environment.json"
+    ],
+    "specs": [],
+    "flows": [],
+    "globals": []
+  }
 }
