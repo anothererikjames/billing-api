@@ -1,0 +1,58 @@
+{
+  "subscriptions": [
+    {
+      "id": 1,
+      "name": "Test subscriptions 1",
+      "status": "active",
+      "createdAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Test subscriptions 2",
+      "status": "active",
+      "createdAt": "2026-01-02T00:00:00Z"
+    }
+  ],
+  "invoices": [
+    {
+      "id": 1,
+      "name": "Test invoices 1",
+      "status": "active",
+      "createdAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Test invoices 2",
+      "status": "active",
+      "createdAt": "2026-01-02T00:00:00Z"
+    }
+  ],
+  "payment-methods": [
+    {
+      "id": 1,
+      "name": "Test payment-methods 1",
+      "status": "active",
+      "createdAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Test payment-methods 2",
+      "status": "active",
+      "createdAt": "2026-01-02T00:00:00Z"
+    }
+  ],
+  "plans": [
+    {
+      "id": 1,
+      "name": "Test plans 1",
+      "status": "active",
+      "createdAt": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Test plans 2",
+      "status": "active",
+      "createdAt": "2026-01-02T00:00:00Z"
+    }
+  ]
+}
